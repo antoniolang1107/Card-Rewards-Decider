@@ -1,0 +1,25 @@
+read the list of credit cards file names from .txt file
+read each credit card json file into a dictionary
+
+display options
+- display categories
+- display merchants
+- enter category
+- enter merchant
+
+based on entered merchant/category, go into dictionary by card
+- loop over cash back percents and check for merchant/category match
+- break once the highest-valued match is found
+
+return best credit card
+
+
+-----
+Ideas
+-----
+- create class for each card
+-- encapsulate base rate, options card is best for
+--- check the "5", "3", "2", etc of each card
+- iterate over list of cards and compare against given input
+- return best card
+(probably better if there are multiple inputs in runtime)
