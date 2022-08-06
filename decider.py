@@ -19,35 +19,46 @@ class Reward:
 
 
 def main():
-    card_file = "card-file.txt"
-    card_data = []
-    for card in read_list(card_file):
-        card_data.append(parse_cards(card))
+    card_data = read_card_list(card_file_name="card-file.txt")
     merchants, categories = parse_dict(card_data)
-    # get_input(card_data)
+    location, spend_type = get_input(merchants, categories)
+    if location != "exit":
+        if spend_type == "merchant":
+            best_card = select_card(merchants, location)
+            pass
+        elif spend_type == "category":
+            best_card = select_card(categories, location)
+        print(f"The best card for the transaction is: {best_card}")
 
-
-def get_input(display_data) -> str:
+def get_input(merchant_data, category_data) -> str:
     """
     displays information and gets input from user
     """
     while True:
         option = ""
-        option = input ("1. Display Merchants\n"
+        option = input ("--------------------------\n"
+                      + "1. Display Merchants\n"
                       + "2. Display Categories\n"
                       + "3. Enter Merchant\n"
                       + "4. Enter Category\n"
+                      + "5. Exit\n"
                       + "Option: ")
+        print("--------------------------")
         if option == "1":
-            pass
-            # print(display_data[0]['merchants']) # works to display, but should be cleaned first
+            for merchant in merchant_data:
+                print(merchant.location)
         elif option == "2":
-            pass
-            # print(display_data[0]['categories'])
-        elif option == "3" or option == "4":
-            return input("Merchant/Category: ") # maybe separate merchant or category
+            for category in category_data:
+                print(category.location)
+        elif option == "3": # add option to select by number/index?
+            return input("Enter the merchant: "), 'merchant'
+        elif option == "4":
+            return input("Enter the category: "), 'category'
+        elif option == "5":
+            break
         else:
             print("Invalid input")
+    return "exit", "exit"
 
 
 def parse_cards(f_name) -> dict:
@@ -70,9 +81,16 @@ def read_list(f_name) -> list:
     return cards
 
 
-def select_card(selection_list, spend_type) -> str:
-    pass
-
+def select_card(selection_list, location) -> str:
+    best_card = ""
+    for reward in selection_list:
+        if reward.location.lower() == location.lower():
+            best_card = reward.card_name
+    if best_card != "":
+        return best_card
+    else:
+        # get "base" reward
+        return best_card
 
 def parse_dict(given_dict) -> list:
     """
@@ -81,8 +99,6 @@ def parse_dict(given_dict) -> list:
     merchants, categories = create_tuples(given_dict)
     merchants = remove_duplicate_rewards(merchants)
     categories = remove_duplicate_rewards(categories)
-
-    # tuple: place, %, card
     return merchants, categories
 
 
@@ -92,18 +108,16 @@ def create_tuples(card_dict) -> list:
     """
     merchant_tuples = []
     category_tuples = []
+    # iterates over the merchants and categories sections of the dict
+    # separates the two into separate Reward lists
     for card in card_dict:
         card_name = card['card']
         for merchants in card['merchants']:
-            # print(f"Merchants: {merchants}")
             for percent, merchant in merchants.items():
-                # print(f"Percent {percent}, Merchant: {merchant}")
                 for specific in merchant:
                     merchant_tuples.append((specific, percent, card_name))
         for categories in card['categories']:
-            # print(f"Categories: {categories}")
             for percent, category in categories.items():
-                # print(f"Percent {percent}, Category: {category}")
                 for specific in category:
                     category_tuples.append(Reward(specific, percent, card_name))
     return merchant_tuples, category_tuples
@@ -117,11 +131,19 @@ def remove_duplicate_rewards(given_list) -> list:
     pruned_list = []
     for value in given_list: # iterates over merchants/categories list
         for loc_seen in seen:
+            # following if removes from the pruned list if the new one is same or better
             if loc_seen.location == value.location and value >= loc_seen:
                 pruned_list.remove(loc_seen)
         seen.append(value)
         pruned_list.append(value)
     return pruned_list
+
+
+def read_card_list(card_file_name) -> dict:
+    card_data = []
+    for card in read_list(card_file_name):
+        card_data.append(parse_cards(card))
+    return card_data
 
 
 if (__name__ == '__main__'):
