@@ -44,11 +44,9 @@ given_list := merchant_list
 seen = []
 pruned = []
 
-iterate over given_list:
-    if same reward location:
-        if new is greater than current:
-            remove current location, add new
-            # use list.remove(Object)
-    else:
-        seen.append(iterated list)
-        pruned.append(iterated list)
+iterate over given_list (value):
+    iterate over 'seen' list (loc_seen):
+        if loc_seen.location == value.location and value >= loc_seen:
+            remove loc_seen from pruned_list
+        append value to seen and pruned_list lists
+return pruned_list
