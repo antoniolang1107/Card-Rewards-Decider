@@ -23,3 +23,32 @@ Ideas
 - iterate over list of cards and compare against given input
 - return best card
 (probably better if there are multiple inputs in runtime)
+- read through once, save the best to file (give refresh option)
+
+--
+Cleaned Card Data
+--
+File Type: class, tuple, dictionary
+- Class: Merchants, Categories
+-- how to encapsulate the card + percentage?
+Tuple best option:
+- make merchants and categories list
+-- each is tuple with merchant/category, percent, card
+
+
+-----------------
+Remove Duplicates
+-----------------
+merchant list or category is passed in (assume merchant list for simplicity)
+given_list := merchant_list
+seen = []
+pruned = []
+
+iterate over given_list:
+    if same reward location:
+        if new is greater than current:
+            remove current location, add new
+            # use list.remove(Object)
+    else:
+        seen.append(iterated list)
+        pruned.append(iterated list)
