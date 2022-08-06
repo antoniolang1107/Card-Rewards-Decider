@@ -83,14 +83,10 @@ def read_list(f_name) -> list:
 
 def select_card(selection_list, location) -> str:
     best_card = ""
-    for reward in selection_list:
-        if reward.location.lower() == location.lower():
+    for reward in reversed(selection_list):
+        if reward.location.lower() == location.lower() or reward.location == "base":
             best_card = reward.card_name
-    if best_card != "":
-        return best_card
-    else:
-        # get "base" reward
-        return best_card
+    return best_card
 
 def parse_dict(given_dict) -> list:
     """
@@ -115,7 +111,7 @@ def create_tuples(card_dict) -> list:
         for merchants in card['merchants']:
             for percent, merchant in merchants.items():
                 for specific in merchant:
-                    merchant_tuples.append((specific, percent, card_name))
+                    merchant_tuples.append(Reward(specific, percent, card_name))
         for categories in card['categories']:
             for percent, category in categories.items():
                 for specific in category:
