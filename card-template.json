@@ -1,9 +1,17 @@
 {
     "card":"name",
     "merchants":[
-        "merchants"
+        {
+            "%":[
+                "<merchant>"
+            ]
+        }
     ],
     "categories":[
-        "categories"
+        {
+            "%":[
+                "<category>"
+            ]
+        }
     ]
 }
